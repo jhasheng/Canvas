@@ -52,7 +52,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($data as $post)
+                                @forelse($data as $post)
                                     <tr>
                                         <td>{{ $post->id }}</td>
                                         <td>{{ $post->title }}</td>
@@ -60,7 +60,9 @@
                                         <td>{{ $post->slug }}</td>
                                         <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $post->published_at)->format('M d, Y') }}</td>
                                     </tr>
-                                @endforeach
+                                    @empty
+                                    <tr><td colspan="5">No Data</td></tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

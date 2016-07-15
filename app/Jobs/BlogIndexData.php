@@ -6,7 +6,7 @@ use App\Models\Tag;
 use App\Models\Post;
 use Illuminate\Contracts\Bus\SelfHandling;
 
-class BlogIndexData extends Job implements SelfHandling
+class BlogIndexData extends Job
 {
     protected $tag;
 

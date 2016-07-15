@@ -2,7 +2,7 @@
     <div class="profile-menu">
         <a href="">
             <div class="profile-pic">
-                <img src="//www.gravatar.com/avatar/{{ md5(Auth::user()->email) }}?d=identicon">
+                <img src="//gravatar.duoshuo.com/avatar/{{ md5(Auth::user()->email) }}?d=identicon">
             </div>
             <div class="profile-info">
                 {{ Auth::user()->display_name }}

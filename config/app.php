@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'timezone' => env('APP_TIMEZONE', 'America/Chicago'),
+    'timezone' => env('APP_TIMEZONE', 'Asia/Shanghai'),
 
     /*
     |--------------------------------------------------------------------------

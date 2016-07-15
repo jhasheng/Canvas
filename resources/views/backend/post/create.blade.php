@@ -27,8 +27,7 @@
                     </div>
                     <div class="card-body card-padding">
                         <form class="keyboard-save" role="form" method="POST" id="postCreate" action="{{ route('admin.post.store') }}">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
+                            {{ csrf_field() }}
                             @include('backend.post.partials.form')
 
                             <div class="form-group">

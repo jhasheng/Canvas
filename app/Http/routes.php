@@ -16,10 +16,9 @@ Route::get('blog/{slug}', 'Frontend\BlogController@showPost');
 Route::get('admin', function () {
     return redirect('/admin/post');
 });
-$router->group([
-    'namespace'  => 'Backend',
-    'middleware' => 'auth',
-], function () {
+
+
+Route::group(['namespace' => 'Backend', 'middleware' => 'auth'], function () {
     Route::resource('admin/post', 'PostController', ['except' => 'show']);
     Route::resource('admin/tag', 'TagController', ['except' => 'show']);
     Route::get('admin/upload', 'UploadController@index')->name('admin/upload');
@@ -37,10 +36,7 @@ $router->group([
 | Logging In/Out Routes
 |--------------------------------------------------------------------------
 */
-$router->group([
-    'namespace' => 'Auth',
-    'prefix'    => 'auth',
-], function () {
+Route::group(['namespace' => 'Auth', 'prefix' => 'auth'], function () {
     Route::get('login', 'AuthController@getLogin');
     Route::post('login', 'AuthController@postLogin');
     Route::get('logout', 'AuthController@getLogout');

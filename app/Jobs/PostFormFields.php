@@ -6,7 +6,7 @@ use App\Models\Tag;
 use App\Models\Post;
 use Illuminate\Contracts\Bus\SelfHandling;
 
-class PostFormFields extends Job implements SelfHandling
+class PostFormFields extends Job
 {
     /**
      * The id (if any) of the Post row
@@ -20,18 +20,18 @@ class PostFormFields extends Job implements SelfHandling
      * @var array
      */
     protected $fieldList = [
-        'title' => '',
-        'subtitle' => '',
-        'page_image' => '',
-        'content' => '',
+        'title'            => '',
+        'subtitle'         => '',
+        'page_image'       => '',
+        'content'          => '',
         'meta_description' => '',
-        'is_draft' => "0",
-        'publish_date' => '',
-        'publish_time' => '',
-        'published_at' => '',
-        'updated_at' => '',
-        'layout' => 'frontend.blog.post',
-        'tags' => [],
+        'is_draft'         => "0",
+        'publish_date'     => '',
+        'publish_time'     => '',
+        'published_at'     => '',
+        'updated_at'       => '',
+        'layout'           => 'frontend.blog.post',
+        'tags'             => [],
     ];
 
     /**
@@ -47,7 +47,7 @@ class PostFormFields extends Job implements SelfHandling
     /**
      * Execute the command.
      *
-     * @return array of fieldnames => values
+     * @return array of fieldNames => values
      */
     public function handle()
     {
@@ -55,7 +55,7 @@ class PostFormFields extends Job implements SelfHandling
         if ($this->id) {
             $fields = $this->fieldsFromModel($this->id, $fields);
         } else {
-            $when = Carbon::now()->addHour();
+            $when                   = Carbon::now()->addHour();
             $fields['publish_date'] = $when->format('M-j-Y');
             $fields['publish_time'] = $when->format('g:i A');
         }
@@ -77,9 +77,9 @@ class PostFormFields extends Job implements SelfHandling
      */
     protected function fieldsFromModel($id, array $fields)
     {
-        $post = Post::findOrFail($id);
+        $post       = Post::findOrFail($id);
         $fieldNames = array_keys(array_except($fields, ['tags']));
-        $fields = ['id' => $id];
+        $fields     = ['id' => $id];
         foreach ($fieldNames as $field) {
             $fields[$field] = $post->{$field};
         }

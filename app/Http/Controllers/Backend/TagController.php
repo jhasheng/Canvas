@@ -1,10 +1,9 @@
 <?php
 namespace App\Http\Controllers\Backend;
 
+use App\Repositories\MySQL\TagRepository;
 use Session;
-use App\Models\Tag;
 use App\Http\Requests;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TagUpdateRequest;
 use App\Http\Requests\TagCreateRequest;
@@ -25,6 +24,13 @@ class TagController extends Controller
         'updated_at' => '',
     ];
 
+    protected $tag;
+
+    public function __construct(TagRepository $tag)
+    {
+        $this->tag = $tag;
+    }
+
     /**
      * Display a listing of the resource
      *
@@ -32,8 +38,7 @@ class TagController extends Controller
      */
     public function index()
     {
-        $data = Tag::all();
-
+        $data = $this->tag->fetchAll();
         foreach ($data as $tag) {
             $tag->subtitle = mb_strimwidth($tag->subtitle, 0, self::TRIM_WIDTH, self::TRIM_MARKER);
         }
@@ -66,9 +71,7 @@ class TagController extends Controller
      */
     public function store(TagCreateRequest $request)
     {
-        $tag = new Tag();
-        $tag->fill($request->toArray())->save();
-        $tag->save();
+        $this->tag->store($request->toArray());
 
         Session::set('_new-tag', trans('messages.create_success', ['entity' => 'tag']));
         return redirect('/admin/tag');
@@ -83,7 +86,7 @@ class TagController extends Controller
      */
     public function edit($id)
     {
-        $tag = Tag::findOrFail($id);
+        $tag = $this->tag->retrieved($id);
         $data = ['id' => $id];
         foreach (array_keys($this->fields) as $field) {
             $data[$field] = old($field, $tag->$field);
@@ -102,9 +105,8 @@ class TagController extends Controller
      */
     public function update(TagUpdateRequest $request, $id)
     {
-        $tag = Tag::findOrFail($id);
-        $tag->fill($request->toArray())->save();
-        $tag->save();
+
+        $this->tag->update($id, $request->toArray());
 
         Session::set('_update-tag', trans('messages.update_success', ['entity' => 'Tag']));
         return redirect("/admin/tag/$id/edit");
@@ -119,8 +121,7 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
-        $tag = Tag::findOrFail($id);
-        $tag->delete();
+        $this->tag->destroy($id);
 
         Session::set('_delete-tag', trans('messages.delete_success', ['entity' => 'Tag']));
         return redirect('/admin/tag');
